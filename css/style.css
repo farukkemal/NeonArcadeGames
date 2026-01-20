@@ -1,0 +1,344 @@
+/* ================================================
+   NEON ARCADE - Main Stylesheet
+   ================================================ */
+
+/* Tailwind Directives (if using build process) */
+/* @tailwind base; @tailwind components; @tailwind utilities; */
+
+/* ================================================
+   BASE STYLES
+   ================================================ */
+body {
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* ================================================
+   NEON EFFECTS
+   ================================================ */
+.neon-text-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+/* ================================================
+   CARD STYLES
+   ================================================ */
+.card-hover:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 0 15px rgba(188, 19, 254, 0.6);
+}
+
+/* ================================================
+   MODAL SYSTEM
+   ================================================ */
+.modal {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    transform: scale(0.95);
+    transition: all 0.3s ease-in-out;
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+/* ================================================
+   GAME CANVAS STYLES
+   ================================================ */
+#snakeCanvas {
+    background-color: #111;
+    border: 2px solid #0aff0a;
+    box-shadow: 0 0 10px #0aff0a;
+}
+
+/* ================================================
+   MEMORY GAME
+   ================================================ */
+.memory-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+.memory-card {
+    aspect-ratio: 1;
+    background: #2d3748;
+    cursor: pointer;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    transition: transform 0.3s, background 0.3s;
+    transform-style: preserve-3d;
+}
+
+.memory-card.flipped {
+    background: #bc13fe;
+    transform: rotateY(180deg);
+    box-shadow: 0 0 10px #bc13fe;
+}
+
+/* ================================================
+   ANIMATIONS
+   ================================================ */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 5px currentColor;
+    }
+
+    50% {
+        box-shadow: 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
+
+/* ================================================
+   UTILITY CLASSES
+   ================================================ */
+.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.preserve-3d {
+    transform-style: preserve-3d;
+}
+
+.rotate-y-180 {
+    transform: rotateY(180deg);
+}
+
+/* ================================================
+   RESPONSIVE ADJUSTMENTS
+   ================================================ */
+@media (max-width: 768px) {
+    .game-card {
+        padding: 1rem;
+    }
+
+    .modal-content {
+        height: 90vh;
+        max-height: 90vh;
+    }
+}
+
+/* ================================================
+   GOOGLE ADSENSE CONTAINERS
+   ================================================ */
+
+/* Base ad container - prevents layout shift */
+.ad-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: repeating-linear-gradient(45deg,
+            rgba(50, 50, 50, 0.1),
+            rgba(50, 50, 50, 0.1) 10px,
+            rgba(60, 60, 60, 0.1) 10px,
+            rgba(60, 60, 60, 0.1) 20px);
+    border: 1px dashed rgba(100, 100, 100, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 1;
+    /* Low z-index to stay behind modals */
+    position: relative;
+}
+
+/* Placeholder text for empty ads */
+.ad-container::before {
+    content: 'AD';
+    font-family: 'Orbitron', sans-serif;
+    font-size: 14px;
+    color: rgba(100, 100, 100, 0.3);
+    letter-spacing: 4px;
+}
+
+/* When ad loads, hide placeholder */
+.ad-container.ad-loaded::before {
+    display: none;
+}
+
+/* Header Leaderboard (728x90) */
+.ad-leaderboard {
+    min-width: 728px;
+    max-width: 728px;
+    min-height: 90px;
+    max-height: 90px;
+    margin: 0 auto 0 auto;
+}
+
+/* Sidebar Skyscraper (160x600) - Desktop only */
+.ad-sidebar {
+    min-width: 160px;
+    max-width: 160px;
+    min-height: 600px;
+    max-height: 600px;
+    position: sticky;
+    top: 100px;
+}
+
+/* Game Over Rectangle (300x250) */
+.ad-rectangle {
+    min-width: 300px;
+    max-width: 300px;
+    min-height: 250px;
+    max-height: 250px;
+    margin-top: 20px;
+    /* Safe distance from buttons */
+}
+
+/* Responsive: Hide leaderboard on mobile */
+@media (max-width: 768px) {
+    .ad-leaderboard {
+        min-width: 320px;
+        max-width: 320px;
+        min-height: 50px;
+        max-height: 100px;
+    }
+
+    .ad-sidebar {
+        display: none !important;
+    }
+
+    .ad-rectangle {
+        min-width: 250px;
+        max-width: 300px;
+    }
+}
+
+/* Ensure ads don't overlap game modals */
+.modal {
+    z-index: 60 !important;
+}
+
+.modal .ad-container {
+    z-index: 1;
+}
+
+/* ================================================
+   VIRTUAL GAMEPAD (Mobile Only)
+   ================================================ */
+
+/* D-Pad Button Base */
+.vpad-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(0, 255, 255, 0.4);
+    border-radius: 8px;
+    color: rgba(0, 255, 255, 0.8);
+    box-shadow:
+        0 0 15px rgba(0, 255, 255, 0.2),
+        inset 0 0 10px rgba(0, 255, 255, 0.1);
+    transition: all 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.vpad-btn:active,
+.vpad-btn.pressed {
+    background: rgba(0, 255, 255, 0.4);
+    border-color: rgba(0, 255, 255, 0.9);
+    color: #fff;
+    box-shadow:
+        0 0 25px rgba(0, 255, 255, 0.6),
+        inset 0 0 15px rgba(0, 255, 255, 0.4);
+    transform: scale(0.95);
+}
+
+/* Action Button (A) */
+.vpad-btn-action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 0, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 0, 255, 0.5);
+    border-radius: 50%;
+    color: rgba(255, 0, 255, 0.9);
+    font-family: 'Orbitron', sans-serif;
+    box-shadow:
+        0 0 20px rgba(255, 0, 255, 0.3),
+        inset 0 0 15px rgba(255, 0, 255, 0.1);
+    transition: all 0.1s ease;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.vpad-btn-action:active,
+.vpad-btn-action.pressed {
+    background: rgba(255, 0, 255, 0.5);
+    border-color: rgba(255, 0, 255, 1);
+    color: #fff;
+    box-shadow:
+        0 0 35px rgba(255, 0, 255, 0.8),
+        inset 0 0 20px rgba(255, 0, 255, 0.5);
+    transform: scale(0.92);
+}
+
+/* Show gamepad only on mobile when game is active */
+@media (max-width: 768px) {
+    #virtualGamepad.active {
+        display: block !important;
+    }
+}
+
+/* Hide on desktop */
+@media (min-width: 769px) {
+    #virtualGamepad {
+        display: none !important;
+    }
+}
+
+/* Touch-friendly: prevent text selection and context menu */
+.vpad-btn,
+.vpad-btn-action {
+    user-select: none;
+    -webkit-user-select: none;
+}
