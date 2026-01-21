@@ -25,6 +25,7 @@ import { MinesweeperGame } from './games/minesweeper.js';
 import { StackGame } from './games/stack.js';
 import { GravityGame } from './games/gravity.js';
 import { GolfGame } from './games/golf.js';
+import { HeadballGame } from './games/headball.js';
 
 // Touch Controller for mobile
 import { initVirtualGamepad, showGamepad, preventScrollOnTouch, isMobile } from './touchController.js';
@@ -179,6 +180,10 @@ const Engine = {
                 title.innerText = "CYBER GOLF";
                 this.currentGame = new GolfGame(container, scoreDisplay, (s) => this.endGame(s));
                 break;
+            case 'headball':
+                title.innerText = "COSMIC HEAD BALL";
+                this.currentGame = new HeadballGame(container, scoreDisplay, (s) => this.endGame(s));
+                break;
             default:
                 console.warn(`Unknown game type: ${gameType}`);
                 return;
@@ -298,7 +303,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'simon': 'puzzle', 'wordle': 'puzzle', 'spaceinvaders': 'action', 'tetris': 'puzzle',
         'hacker': 'reflex', 'runner': 'action', 'slicer': 'action', 'lock': 'reflex',
         'battleship': 'strategy', 'minesweeper': 'strategy',
-        'stack': 'reflex', 'gravity': 'action', 'golf': 'puzzle'
+        'stack': 'reflex', 'gravity': 'action', 'golf': 'puzzle', 'headball': 'action'
     };
 
     // Assign categories to cards based on their play button
