@@ -86,8 +86,8 @@ export class HackerGame extends Game {
             return;
         }
 
-        if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
-            this.typedText += e.key.toUpperCase();
+        if (e.key.length === 1 && /[a-zA-ZğüşıöçĞÜŞİÖÇ]/i.test(e.key)) {
+            this.typedText += e.key.toLocaleUpperCase('tr-TR');
             this.checkMatch();
         }
     }
@@ -111,8 +111,8 @@ export class HackerGame extends Game {
                     // Level up every 10 words
                     if (this.wordsCleared % 10 === 0) {
                         this.level++;
-                        this.baseSpeed = Math.min(80, 30 + (this.level - 1) * 8);
-                        this.spawnInterval = Math.max(1, 2.5 - this.level * 0.15);
+                        this.baseSpeed = Math.min(100, 30 + (this.level - 1) * 12);
+                        this.spawnInterval = Math.max(0.7, 2.5 - this.level * 0.25);
                     }
                 }
                 matched = true;

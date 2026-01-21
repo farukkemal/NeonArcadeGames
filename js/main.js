@@ -22,6 +22,9 @@ import { SlicerGame } from './games/slicer.js';
 import { LockGame } from './games/lock.js';
 import { BattleshipGame } from './games/battleship.js';
 import { MinesweeperGame } from './games/minesweeper.js';
+import { StackGame } from './games/stack.js';
+import { GravityGame } from './games/gravity.js';
+import { GolfGame } from './games/golf.js';
 
 // Touch Controller for mobile
 import { initVirtualGamepad, showGamepad, preventScrollOnTouch, isMobile } from './touchController.js';
@@ -164,6 +167,18 @@ const Engine = {
                 title.innerText = "GLITCH SWEEPER";
                 this.currentGame = new MinesweeperGame(container, scoreDisplay, (s) => this.endGame(s));
                 break;
+            case 'stack':
+                title.innerText = "NEON STACK";
+                this.currentGame = new StackGame(container, scoreDisplay, (s) => this.endGame(s));
+                break;
+            case 'gravity':
+                title.innerText = "GRAVITY SHIFT";
+                this.currentGame = new GravityGame(container, scoreDisplay, (s) => this.endGame(s));
+                break;
+            case 'golf':
+                title.innerText = "CYBER GOLF";
+                this.currentGame = new GolfGame(container, scoreDisplay, (s) => this.endGame(s));
+                break;
             default:
                 console.warn(`Unknown game type: ${gameType}`);
                 return;
@@ -227,7 +242,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.Audio = Audio;
 
     // Input Tracking
-    window.addEventListener('keydown', e => Input.keys[e.key] = true);
+    window.addEventListener('keydown', e => {
+        Input.keys[e.key] = true;
+        // Prevent page scroll when game modal is open
+        const modal = document.getElementById('gameModal');
+        if (modal && modal.classList.contains('active') &&
+            [' ', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+        }
+    });
     window.addEventListener('keyup', e => Input.keys[e.key] = false);
     window.addEventListener('mousemove', e => {
         Input.mouse.x = e.clientX;
@@ -274,7 +297,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'brick': 'action', 'whack': 'reflex', 'flappy': 'action', 'game2048': 'puzzle',
         'simon': 'puzzle', 'wordle': 'puzzle', 'spaceinvaders': 'action', 'tetris': 'puzzle',
         'hacker': 'reflex', 'runner': 'action', 'slicer': 'action', 'lock': 'reflex',
-        'battleship': 'strategy', 'minesweeper': 'strategy'
+        'battleship': 'strategy', 'minesweeper': 'strategy',
+        'stack': 'reflex', 'gravity': 'action', 'golf': 'puzzle'
     };
 
     // Assign categories to cards based on their play button

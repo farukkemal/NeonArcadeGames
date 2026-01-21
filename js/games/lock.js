@@ -35,7 +35,7 @@ export class LockGame extends Game {
     setupLock() {
         this.angle = 0;
         this.direction = 1;
-        this.baseSpeed = 2 + this.level * 0.5;
+        this.baseSpeed = 3.5 + this.level * 0.8;
         this.speed = this.baseSpeed;
         this.targetAngle = Math.random() * Math.PI * 2;
         this.targetSize = Math.max(0.3, 0.6 - this.currentLock * 0.03);
@@ -75,7 +75,7 @@ export class LockGame extends Game {
 
             setTimeout(() => {
                 this.direction *= -1;
-                this.speed = this.baseSpeed + this.currentLock * 0.3;
+                this.speed = this.baseSpeed * Math.pow(1.15, this.currentLock);
                 this.setupLock();
                 this.locked = false;
             }, 400);

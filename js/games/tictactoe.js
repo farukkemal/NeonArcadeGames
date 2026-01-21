@@ -30,11 +30,13 @@ export class TicTacToeGame extends Game {
         menu.innerHTML = `
             <h2 class="text-2xl font-display text-neon-blue mb-4">ZORLUK SEÇ</h2>
             <button id="easy" class="w-64 py-3 bg-green-600 text-white font-bold rounded-lg hover:scale-105 transition-transform">😊 KOLAY</button>
+            <button id="medium" class="w-64 py-3 bg-yellow-600 text-white font-bold rounded-lg hover:scale-105 transition-transform">🤔 ORTA</button>
             <button id="hard" class="w-64 py-3 bg-red-600 text-white font-bold rounded-lg hover:scale-105 transition-transform">🔥 ZOR (Yenilmez)</button>
         `;
         this.container.appendChild(menu);
 
         menu.querySelector('#easy').onclick = () => this.startGame(true, 'easy');
+        menu.querySelector('#medium').onclick = () => this.startGame(true, 'medium');
         menu.querySelector('#hard').onclick = () => this.startGame(true, 'hard');
     }
 
@@ -106,6 +108,8 @@ export class TicTacToeGame extends Game {
         let move;
         if (this.difficulty === 'hard') {
             move = this.minimax(this.board, 'O').index;
+        } else if (this.difficulty === 'medium') {
+            move = this.findMediumMove();
         } else {
             const empty = this.board.map((v, i) => v === null ? i : -1).filter(i => i >= 0);
             move = empty[Math.floor(Math.random() * empty.length)];
@@ -152,6 +156,28 @@ export class TicTacToeGame extends Game {
 
     checkWin(player) {
         return this.checkWinBoard(this.board, player);
+    }
+
+    findMediumMove() {
+        // 1. Can AI win? Take the winning move.
+        for (let i = 0; i < 9; i++) {
+            if (this.board[i] === null) {
+                const testBoard = [...this.board];
+                testBoard[i] = 'O';
+                if (this.checkWinBoard(testBoard, 'O')) return i;
+            }
+        }
+        // 2. Can opponent win? Block it.
+        for (let i = 0; i < 9; i++) {
+            if (this.board[i] === null) {
+                const testBoard = [...this.board];
+                testBoard[i] = 'X';
+                if (this.checkWinBoard(testBoard, 'X')) return i;
+            }
+        }
+        // 3. Random move
+        const empty = this.board.map((v, i) => v === null ? i : -1).filter(i => i >= 0);
+        return empty[Math.floor(Math.random() * empty.length)];
     }
 
     checkWinBoard(board, player) {

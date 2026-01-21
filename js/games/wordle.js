@@ -6,7 +6,8 @@ import { Game } from './Game.js';
 export class WordleGame extends Game {
     init() {
         this.container.innerHTML = '';
-        this.words = ['KALEM', 'MASAL', 'KITAP', 'ARABA', 'BAHCE', 'DENIZ', 'GUNES', 'BULUT', 'CICEK', 'AGACI', 'KAPIS', 'DUVAR', 'TAVAN', 'ZEMIN', 'RESIM', 'TABLA', 'SANKI', 'BILGI', 'KALIP', 'CILEK'];
+        this.validWords = ['KALEM', 'MASAL', 'KITAP', 'ARABA', 'BAHCE', 'DENIZ', 'GUNES', 'BULUT', 'CICEK', 'AGACI', 'KAPIS', 'DUVAR', 'TAVAN', 'ZEMIN', 'RESIM', 'TABLA', 'SANKI', 'BILGI', 'KALIP', 'CILEK', 'BEBEK', 'KADIN', 'ERKEK', 'PASTA', 'KAHVE', 'SABAH', 'AKSAM', 'GELIN', 'DAMAT', 'KOYUN', 'TAVUK', 'BALCI', 'DALGA', 'ORMAN', 'SAHIL', 'TEPKI', 'YALAN', 'YARGI', 'YAPIM', 'SALON', 'MUTLU', 'HESAP', 'TAKIP', 'BASIT', 'AYLIK', 'CESUR', 'DOKUZ', 'EGZOZ', 'FAZLA'];
+        this.words = this.validWords;
         this.targetWord = this.words[Math.floor(Math.random() * this.words.length)].toUpperCase();
         this.wordLength = 5;
         this.maxGuesses = 6;
@@ -68,6 +69,30 @@ export class WordleGame extends Game {
         wrapper.appendChild(keyboard);
 
         this.container.appendChild(wrapper);
+
+        // Physical keyboard support
+        this.keyHandler = (e) => {
+            if (this.gameEnded) return;
+            if (e.key === 'Enter') this.submitGuess();
+            else if (e.key === 'Backspace') this.deleteLetter();
+            else if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) this.addLetter(e.key.toUpperCase());
+        };
+        document.addEventListener('keydown', this.keyHandler);
+    }
+
+    stop() {
+        super.stop();
+        if (this.keyHandler) {
+            document.removeEventListener('keydown', this.keyHandler);
+        }
+    }
+
+    showMessage(msg) {
+        const msgEl = document.createElement('div');
+        msgEl.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-red-600 text-white px-4 py-2 rounded z-50 font-bold shadow-lg';
+        msgEl.innerText = msg;
+        document.body.appendChild(msgEl);
+        setTimeout(() => msgEl.remove(), 1500);
     }
 
     addLetter(letter) {
@@ -96,6 +121,12 @@ export class WordleGame extends Game {
 
     submitGuess() {
         if (this.gameEnded || this.currentGuess.length !== this.wordLength) return;
+
+        // Validate word exists
+        if (!this.validWords.includes(this.currentGuess.toUpperCase())) {
+            this.showMessage('Kelime Bulunamadı!');
+            return;
+        }
 
         const row = this.guesses.length;
         const guess = this.currentGuess.toUpperCase();

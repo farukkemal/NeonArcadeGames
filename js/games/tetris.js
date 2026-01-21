@@ -7,15 +7,15 @@ import { Game } from './Game.js';
 export class TetrisGame extends Game {
     init() {
         this.canvas = document.createElement('canvas');
-        this.canvas.width = 320;
-        this.canvas.height = 480;
+        this.canvas.width = 380;
+        this.canvas.height = 540;
         this.canvas.className = "border-2 border-purple-500 shadow-[0_0_20px_purple] bg-black max-w-full";
         this.container.appendChild(this.canvas);
         this.ctx = this.canvas.getContext('2d');
 
         this.cols = 10;
         this.rows = 20;
-        this.cellSize = 22;
+        this.cellSize = 26;
         this.offsetX = 20;
         this.offsetY = 20;
 

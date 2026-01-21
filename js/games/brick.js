@@ -28,7 +28,8 @@ export class BrickBreakerGame extends Game {
     }
 
     setupLevel() {
-        this.paddle = { w: 80, h: 10, x: 200, y: 370, color: '#ffff00' };
+        const paddleWidth = Math.max(50, 80 - (this.level - 1) * 6);
+        this.paddle = { w: paddleWidth, h: 10, x: 200, y: 370, color: '#ffff00' };
         const baseSpeed = 180 + (this.level - 1) * 20;
         this.ball = { x: 240, y: 350, r: 6, dx: baseSpeed, dy: -baseSpeed, color: '#ffffff', launched: false };
         this.bricks = this.generateBricks();
@@ -103,6 +104,12 @@ export class BrickBreakerGame extends Game {
             this.ball.dx = Math.cos(angle) * speed;
             this.ball.dy = -Math.abs(Math.sin(angle) * speed);
 
+            // Ensure minimum vertical speed to prevent horizontal-only bouncing
+            const minDy = speed * 0.4;
+            if (Math.abs(this.ball.dy) < minDy) {
+                this.ball.dy = -minDy;
+            }
+
             window.Audio?.play('hit');
         }
 
@@ -154,6 +161,9 @@ export class BrickBreakerGame extends Game {
                 this.gameOver('TÜM SEVİYELER TAMAM!');
             } else {
                 this.level++;
+                // Increase difficulty: speed +10%
+                this.ball.dx *= 1.1;
+                this.ball.dy *= 1.1;
                 this.showLevelStart();
             }
         }

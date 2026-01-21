@@ -44,6 +44,8 @@ body {
 .modal-content {
     transform: scale(0.95);
     transition: all 0.3s ease-in-out;
+    max-width: 800px;
+    width: 95vw;
 }
 
 .modal.active .modal-content {
@@ -161,8 +163,15 @@ body {
     }
 
     .modal-content {
-        height: 90vh;
+        width: 95vw;
+        height: 85vh;
         max-height: 90vh;
+    }
+}
+
+@media (min-width: 769px) {
+    .modal-content {
+        min-height: 600px;
     }
 }
 

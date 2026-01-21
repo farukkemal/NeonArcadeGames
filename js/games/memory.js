@@ -93,11 +93,17 @@ export class MemoryGame extends Game {
         this.updatePlayerIndicator();
 
         const grid = document.createElement('div');
-        grid.className = 'grid gap-2';
+        grid.className = 'grid gap-1 md:gap-2';
         grid.style.gridTemplateColumns = `repeat(${this.gridSize}, 1fr)`;
+        grid.style.maxWidth = '100%';
+        grid.style.overflow = 'hidden';
         this.container.appendChild(grid);
 
-        const cardSize = this.gridSize <= 4 ? 'w-16 h-16 md:w-20 md:h-20 text-3xl' : this.gridSize <= 6 ? 'w-12 h-12 md:w-14 md:h-14 text-2xl' : 'w-10 h-10 md:w-12 md:h-12 text-xl';
+        const cardSize = this.gridSize <= 4
+            ? 'w-14 h-14 md:w-20 md:h-20 text-2xl md:text-3xl'
+            : this.gridSize <= 6
+                ? 'w-10 h-10 md:w-14 md:h-14 text-xl md:text-2xl'
+                : 'w-7 h-7 md:w-10 md:h-10 text-sm md:text-lg';
 
         this.cards.forEach((emoji, i) => {
             const card = document.createElement('div');
